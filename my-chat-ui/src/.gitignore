@@ -10,7 +10,7 @@ build/
 
 # env files
 .env
-.env.local
+.env.*
 
 # wrangler local state
 .wrangler/
