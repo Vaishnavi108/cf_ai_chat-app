@@ -9,13 +9,16 @@ export default function App() {
     },
   ]);
   const [loading, setLoading] = useState(false);
-  const API_URL = import.meta.env.VITE_API_URL;
+  const API_URL =
+    import.meta.env.VITE_API_URL ||
+    "https://ai-chat-app.vaishnavimn178.workers.dev";
   const sendMessage = async () => {
     if (!input.trim()) return;
 
-    const userMsg = { role: "user", content: input };
+    const currentInput = input;
 
-    setMessages((prev) => [...prev, userMsg]);
+    setMessages((prev) => [...prev, { role: "user", content: currentInput }]);
+
     setInput("");
     setLoading(true);
 
@@ -26,7 +29,7 @@ export default function App() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          message: input,
+          message: currentInput,
           sessionId: "user1",
         }),
       });
@@ -39,6 +42,7 @@ export default function App() {
       ]);
     } catch (err) {
       console.error(err);
+
       setMessages((prev) => [
         ...prev,
         { role: "assistant", content: "⚠️ Server not reachable" },
